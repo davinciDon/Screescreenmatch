@@ -13,7 +13,7 @@ import java.net.http.HttpResponse;
 
 public class ConsumoApi {
 
-    public DadosSerie ObterDadosJsonTitulo(String titulo){
+    public DadosSerie ObterDadosJsonTitulo(String titulo) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://www.omdbapi.com/?t=" + titulo.replace(" ", "+") + "&apikey=7e3f7c1a"))
@@ -22,25 +22,21 @@ public class ConsumoApi {
         try {
             response = client
                     .send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            System.out.println("nome invalid");
-
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            System.out.println("nome invalid");
+        } catch (IOException | InterruptedException e) {
+            System.out.println("name invalid");
             throw new RuntimeException(e);
         }
         String json = response.body();
         ObjectMapper mapper = new ObjectMapper();
         try {
-            return  mapper.readValue(json, DadosSerie.class);
+            return mapper.readValue(json, DadosSerie.class);
         } catch (JsonProcessingException e) {
             System.out.println("Erro em gerar json");
             throw new RuntimeException(e);
         }
     }
 
-    public String ObterDadosJsonEpisode(String titulo, Integer season, Integer episode)  {
+    public String ObterDadosJsonEpisode(String titulo, Integer season, Integer episode) {
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -53,12 +49,10 @@ public class ConsumoApi {
         try {
             response = client
                     .send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             System.out.println("nome invalid");
             throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            System.out.println("input invalid");
-            throw new RuntimeException(e);
+
         }
         String json = response.body();
         return json;
@@ -75,11 +69,8 @@ public class ConsumoApi {
         try {
             response = client
                     .send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            System.out.println("input invalid");
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            System.out.println("input invalid");
+        } catch (IOException | InterruptedException e) {
+            System.out.println("nome invalid");
             throw new RuntimeException(e);
         }
         String json = response.body();
@@ -92,7 +83,7 @@ public class ConsumoApi {
         }
     }
 
-    public String ObterDadosJsonApi(String enderecoHttp)  {
+    public String ObterDadosJsonApi(String enderecoHttp) {
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -102,11 +93,8 @@ public class ConsumoApi {
         try {
             response = client
                     .send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            System.out.println("input invalid");
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            System.out.println("input invalid");
+        } catch (IOException | InterruptedException e) {
+            System.out.println("name invalid");
             throw new RuntimeException(e);
         }
         String json = response.body();
