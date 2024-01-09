@@ -1,5 +1,8 @@
 package com.davi.Screescreenmatch.model;
 
+import com.davi.Screescreenmatch.model.Dados.DadosSerie;
+import com.davi.Screescreenmatch.model.Dados.DadosTemporada;
+import com.davi.Screescreenmatch.model.clas.Episodio;
 import com.davi.Screescreenmatch.service.ConsumoApi;
 import lombok.*;
 
@@ -10,18 +13,18 @@ import java.util.stream.Collectors;
 @Getter(AccessLevel.PRIVATE)
 @Setter(AccessLevel.PRIVATE)
 public class MetodosTitulo {
-    private String name;
-    private List<DadosSerie> seriesList = new ArrayList<>();
+    public String thisName;
+    protected List<DadosSerie> DadosSeriesList = new ArrayList<>();
     private List<DadosTemporada> temporadas = new ArrayList<>();
     private List<Episodio> todesEpisodes;
     ConsumoApi consumoApi = new ConsumoApi();
 
     public MetodosTitulo(String name) {
-        setName(name);
-        DadosSerie serie = consumoApi.ObterDadosJsonTitulo(getName());
+        thisName = name.toLowerCase();
+        DadosSerie serie = consumoApi.ObterDadosJsonTitulo(name);
 
         try {
-            seriesList.add(serie);
+            DadosSeriesList.add(serie);
             for (int i = 1; i < serie.totalTemporadas() + 1; i++) {
                 var season = consumoApi.ObterDadosJsonSeason(serie.titulo(), i);
                 temporadas.add(season);
@@ -31,6 +34,8 @@ public class MetodosTitulo {
                             .map(d -> new Episodio(t.numero(), d))
                     ).collect(Collectors.toList());
 
+
+
         } catch (NullPointerException e) {
             System.out.println("\n" + e + "\nInput invalid class Titulo\n");
         }
@@ -38,7 +43,7 @@ public class MetodosTitulo {
     }
 
     public void exibirSerie() {
-        seriesList.forEach(System.out::println);
+        DadosSeriesList.forEach(System.out::println);
     }
 
     public void listEpisodes() {

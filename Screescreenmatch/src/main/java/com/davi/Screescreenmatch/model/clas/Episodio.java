@@ -1,6 +1,7 @@
-package com.davi.Screescreenmatch.model;
+package com.davi.Screescreenmatch.model.clas;
 
 
+import com.davi.Screescreenmatch.model.Dados.DadosEpisodio;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.OptionalDouble;
 
 @Getter
 @Setter(AccessLevel.PRIVATE)
@@ -21,18 +23,18 @@ public class Episodio {
     private LocalDate dataLancamento;
     String data;
     DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    public Episodio(Integer numero, DadosEpisodio d) {
+    public Episodio(Integer numero, DadosEpisodio dadosEpisodio) {
 
         this.setTemporada(numero);
-        this.setTitulo(d.titulo());
-        this.setNumeroEp(d.numeroEp());
+        this.setTitulo(dadosEpisodio.titulo());
+        this.setNumeroEp(dadosEpisodio.numeroEp());
         try {
-            this.setAvaliacao(Double.parseDouble(d.avaliacao()));
+            this.setAvaliacao(OptionalDouble.of(Double.valueOf(dadosEpisodio.avaliacao())).orElse(0));
         } catch (NumberFormatException ex) {
             this.setAvaliacao(0);
         }
         try {
-            this.setDataLancamento(LocalDate.parse(d.dataLancamento()));
+            this.setDataLancamento(LocalDate.parse(dadosEpisodio.dataLancamento()));
             this.setData(getDataLancamento().format(format));
         } catch (DateTimeParseException ex) {
             this.setDataLancamento(null);

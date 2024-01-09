@@ -1,7 +1,7 @@
 package com.davi.Screescreenmatch.service;
 
-import com.davi.Screescreenmatch.model.DadosSerie;
-import com.davi.Screescreenmatch.model.DadosTemporada;
+import com.davi.Screescreenmatch.model.Dados.DadosSerie;
+import com.davi.Screescreenmatch.model.Dados.DadosTemporada;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -14,9 +14,10 @@ import java.net.http.HttpResponse;
 public class ConsumoApi {
 
     public DadosSerie ObterDadosJsonTitulo(String titulo) {
+        String endereco = titulo.toLowerCase();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://www.omdbapi.com/?t=" + titulo.replace(" ", "+") + "&apikey=7e3f7c1a"))
+                .uri(URI.create("https://www.omdbapi.com/?t=" + endereco.replace(" ", "+") + "&apikey=7e3f7c1a"))
                 .build();
         HttpResponse<String> response;
         try {
@@ -37,11 +38,11 @@ public class ConsumoApi {
     }
 
     public String ObterDadosJsonEpisode(String titulo, Integer season, Integer episode) {
-
+        String endereco = titulo.toLowerCase();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://www.omdbapi.com/?t=" +
-                        titulo.replace(" ", "+") + "&season=" + season +
+                        endereco.replace(" ", "+") + "&season=" + season +
                         "&episode=" + episode + "&apikey=7e3f7c1a"))
                 .build();
         HttpResponse<String> response;
@@ -59,10 +60,11 @@ public class ConsumoApi {
     }
 
     public DadosTemporada ObterDadosJsonSeason(String titulo, Integer season) {
+        String endereco = titulo.toLowerCase();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://www.omdbapi.com/?t=" +
-                        titulo.replace(" ", "+") + "&season=" + season +
+                        endereco.replace(" ", "+") + "&season=" + season +
                         "&apikey=7e3f7c1a"))
                 .build();
         HttpResponse<String> response;

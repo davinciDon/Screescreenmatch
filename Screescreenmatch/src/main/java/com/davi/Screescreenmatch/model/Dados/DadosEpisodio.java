@@ -1,4 +1,4 @@
-package com.davi.Screescreenmatch.model;
+package com.davi.Screescreenmatch.model.Dados;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

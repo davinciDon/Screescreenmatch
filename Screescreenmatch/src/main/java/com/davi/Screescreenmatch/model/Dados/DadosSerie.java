@@ -1,4 +1,4 @@
-package com.davi.Screescreenmatch.model;
+package com.davi.Screescreenmatch.model.Dados;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -13,8 +13,12 @@ public record DadosSerie(@JsonAlias("Title") String titulo,
                          @JsonAlias("Plot") String sinopse) {
     public String toString() {
         return " \nTitulo: " + titulo() + "\n" +
-                "Temporadas: " + totalTemporadas() + "\n" +
-                "Avaliação: " + avaliacao() + "\n";
+                "Nº temporadas: " + totalTemporadas() + "\n" +
+                "Avaliação: " + avaliacao() + "\n" +
+                "Genero: " + genero() + "\n" +
+                "Atores: " + atores() + "\n" +
+                "Sinopse: " + sinopse() + "\n" +
+                poster();
 
     }
 }

@@ -1,6 +1,7 @@
 package com.davi.Screescreenmatch;
 
 import com.davi.Screescreenmatch.Application.Application;
+import com.davi.Screescreenmatch.model.Menu;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
