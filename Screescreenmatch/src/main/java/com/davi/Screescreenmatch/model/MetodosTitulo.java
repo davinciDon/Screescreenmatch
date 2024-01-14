@@ -3,6 +3,7 @@ package com.davi.Screescreenmatch.model;
 import com.davi.Screescreenmatch.model.Dados.DadosSerie;
 import com.davi.Screescreenmatch.model.Dados.DadosTemporada;
 import com.davi.Screescreenmatch.model.clas.Episodio;
+import com.davi.Screescreenmatch.model.clas.Serie;
 import com.davi.Screescreenmatch.service.ConsumoApi;
 import lombok.*;
 
@@ -10,23 +11,25 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Getter(AccessLevel.PRIVATE)
-@Setter(AccessLevel.PRIVATE)
+
+
 public class MetodosTitulo {
-    public String thisName;
-    protected List<DadosSerie> DadosSeriesList = new ArrayList<>();
-    private List<DadosTemporada> temporadas = new ArrayList<>();
+
+    private final List<DadosTemporada> temporadas = new ArrayList<>();
     private List<Episodio> todesEpisodes;
+    @Getter
+    private Serie serie;
     ConsumoApi consumoApi = new ConsumoApi();
 
-    public MetodosTitulo(String name) {
-        thisName = name.toLowerCase();
-        DadosSerie serie = consumoApi.ObterDadosJsonTitulo(name);
+
+    MetodosTitulo(String name) {
+        DadosSerie dadossSerie = consumoApi.ObterDadosJsonTitulo(name);
+
 
         try {
-            DadosSeriesList.add(serie);
-            for (int i = 1; i < serie.totalTemporadas() + 1; i++) {
-                var season = consumoApi.ObterDadosJsonSeason(serie.titulo(), i);
+            serie = new Serie(dadossSerie);
+            for (int i = 1; i < dadossSerie.totalTemporadas() + 1; i++) {
+                DadosTemporada season = consumoApi.ObterDadosJsonSeason(dadossSerie.titulo(), i);
                 temporadas.add(season);
             }
             todesEpisodes = temporadas.stream()
@@ -34,16 +37,13 @@ public class MetodosTitulo {
                             .map(d -> new Episodio(t.numero(), d))
                     ).collect(Collectors.toList());
 
-
-
         } catch (NullPointerException e) {
             System.out.println("\n" + e + "\nInput invalid class Titulo\n");
         }
-
     }
 
     public void exibirSerie() {
-        DadosSeriesList.forEach(System.out::println);
+        System.out.println(getSerie());
     }
 
     public void listEpisodes() {
@@ -51,13 +51,13 @@ public class MetodosTitulo {
     }
 
     public void listTemporadas() {
-        temporadas.forEach(t -> t.print());
+        temporadas.forEach(DadosTemporada::print);
     }
 
 
     public void buscarEpisodio(Integer temporada, Integer ep) {
         todesEpisodes.stream()
-                .filter(t -> t.getTemporada() == temporada && t.getNumeroEp() == ep)
+                .filter(t -> t.getTemporada().equals(temporada) && t.getNumeroEp().equals(ep))
                 .findFirst().ifPresentOrElse(
                         System.out::println,
                         () -> System.out.println("Episódio não encontrado"));
@@ -90,7 +90,7 @@ public class MetodosTitulo {
 
     }
 
-    public void buscaEpisode(String title) {
+    public void buscaEpisodePorNome(String title) {
         todesEpisodes.stream()
                 .filter(t -> t.getTitulo().toLowerCase().contains(title.toLowerCase()))
                 .findFirst().ifPresentOrElse(
@@ -115,7 +115,7 @@ public class MetodosTitulo {
                     "\nQuantidade de episodios: " + est.getCount() +
                     "\nAvaliçao minima " + est.getMin() +
                     "\nAvaliçao maxima: " + est.getMax() +
-                    "\nMedia da temporada: %.2f", est.getAverage());
+                    "\nMedia da temporada: %.2f\n   ", est.getAverage());
         });
     }
 }

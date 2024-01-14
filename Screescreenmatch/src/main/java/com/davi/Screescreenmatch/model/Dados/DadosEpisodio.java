@@ -17,13 +17,13 @@ public record DadosEpisodio(@JsonAlias("Title") String titulo,
     public String toString() {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate data;
-        String d = null;
+        String date = null;
         try {
         data = LocalDate.parse(dataLancamento);
-        d = data.format(format);
-        } catch (DateTimeParseException ex) {
-            data = null;
+        date = data.format(format);
+        } catch (DateTimeParseException e) {
+           System.out.println(e);
         }
-        return d + "| N° "+ numeroEp +" | Title: " + titulo + " Nota: " + avaliacao+"\n";
+        return date + "| N° "+ numeroEp +" | Title: " + titulo + " Nota: " + avaliacao+"\n";
     }
 }

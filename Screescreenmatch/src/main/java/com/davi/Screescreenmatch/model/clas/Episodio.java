@@ -29,7 +29,7 @@ public class Episodio {
         this.setTitulo(dadosEpisodio.titulo());
         this.setNumeroEp(dadosEpisodio.numeroEp());
         try {
-            this.setAvaliacao(OptionalDouble.of(Double.valueOf(dadosEpisodio.avaliacao())).orElse(0));
+            this.setAvaliacao(OptionalDouble.of(Double.parseDouble(dadosEpisodio.avaliacao())).orElse(0));
         } catch (NumberFormatException ex) {
             this.setAvaliacao(0);
         }

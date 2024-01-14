@@ -1,6 +1,5 @@
 package com.davi.Screescreenmatch.model.Dados;
 
-import com.davi.Screescreenmatch.model.Dados.DadosEpisodio;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;

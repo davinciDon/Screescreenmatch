@@ -1,5 +1,6 @@
 package com.davi.Screescreenmatch.model;
 
+import com.davi.Screescreenmatch.Repository.SerieRepository;
 import com.davi.Screescreenmatch.model.clas.Serie;
 
 import java.util.ArrayList;
@@ -9,19 +10,21 @@ import java.util.Scanner;
 public class Menu {
 
     Scanner scanner = new Scanner(System.in);
-    private List<Serie> serieList = new ArrayList<>();
-    OpcoesMenu opcoesMenu = new OpcoesMenu();
+    OpcoesMenu opcoesMenu;
 
 
+   public Menu(SerieRepository serieRepository){
+        opcoesMenu = new OpcoesMenu(serieRepository);
+    }
     public void exibirMenu() {
         var opcao = -1;
         try {
             while (opcao != 0) {
 
                 var menu = """
-                        1 - Buscar séries
-                        2 - Buscar episódios
-                        3 - Listar séries buscadas
+                        1 - Buscar titulo
+                        2 - Buscar episódio
+                        3 - Listar titulos buscados
                         4 - Exibir Lista de episodios
                         5 - Top 10 episodios
                         6 - Buscar episodio por nome

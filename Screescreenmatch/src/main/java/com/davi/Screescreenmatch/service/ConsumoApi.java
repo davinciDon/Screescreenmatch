@@ -55,8 +55,7 @@ public class ConsumoApi {
             throw new RuntimeException(e);
 
         }
-        String json = response.body();
-        return json;
+        return response.body();
     }
 
     public DadosTemporada ObterDadosJsonSeason(String titulo, Integer season) {
@@ -99,7 +98,6 @@ public class ConsumoApi {
             System.out.println("name invalid");
             throw new RuntimeException(e);
         }
-        String json = response.body();
-        return json;
+        return response.body();
     }
 }

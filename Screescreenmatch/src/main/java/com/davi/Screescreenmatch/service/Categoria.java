@@ -3,16 +3,17 @@ package com.davi.Screescreenmatch.service;
 
 public enum Categoria {
     ACAO("Action"),
-    ROMANCE("Romance"),
-    COMEDIA("Comedy"),
-    DRAMA("Drama"),
-    CRIME("Crime"),
     Adventure("Adventure"),
-    Fantasy("Fantasy");
+    COMEDIA("Comedy"),
+    CRIME("Crime"),
+    DRAMA("Drama"),
+    Fantasy("Fantasy"),
+    ROMANCE("Romance"),
+    Thriller("Thriller");
 
-    private String categoriaOmdb;
+    private final String categoriaOmdb;
 
-    Categoria(String categoriaOmdb){
+    Categoria(String categoriaOmdb) {
         this.categoriaOmdb = categoriaOmdb;
     }
 

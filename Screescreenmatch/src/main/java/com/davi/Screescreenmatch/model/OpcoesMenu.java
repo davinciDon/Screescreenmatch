@@ -1,37 +1,47 @@
 package com.davi.Screescreenmatch.model;
 
+import com.davi.Screescreenmatch.Repository.SerieRepository;
 import com.davi.Screescreenmatch.model.clas.Serie;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class OpcoesMenu {
-    List<MetodosTitulo> listaTitulo = new ArrayList<>();
-    private Scanner scanner = new Scanner(System.in);
-    private List<Serie> serieList = new ArrayList<>();
+    @Autowired
+    private SerieRepository serieRepository;
+    List<Serie> serieList = new ArrayList<>();
+
+    public OpcoesMenu(SerieRepository serieRepository) {
+        this.serieRepository = serieRepository;
+    }
+
+    private final Scanner scanner = new Scanner(System.in);
 
     protected void Statistics() {
         System.out.println("digite o nome da serie");
         MetodosTitulo titulo = new MetodosTitulo(scanner.nextLine());
         titulo.avalicaoPorTemporada();
-        checkContains(titulo);
+        addSerieList(titulo.getSerie());
     }
 
     protected void buscarPorNome() {
         System.out.println("digite o nome da serie");
         MetodosTitulo titulo = new MetodosTitulo(scanner.nextLine());
         System.out.println("digite um trecho do titulo");
-        titulo.buscaEpisode(scanner.nextLine());
-        checkContains(titulo);
+        addSerieList(titulo.getSerie());
     }
 
     protected void top10() {
         System.out.println("digite o nome da serie");
         MetodosTitulo titulo = new MetodosTitulo(scanner.nextLine());
         titulo.topEpisode(10);
-        checkContains(titulo);
+        addSerieList(titulo.getSerie());
 
     }
 
@@ -39,7 +49,7 @@ public class OpcoesMenu {
         System.out.println("digite o nome da serie");
         MetodosTitulo titulo = new MetodosTitulo(scanner.nextLine());
         titulo.listTemporadas();
-        checkContains(titulo);
+        addSerieList(titulo.getSerie());
 
     }
 
@@ -51,40 +61,34 @@ public class OpcoesMenu {
         System.out.println("digite o episodio: \n");
         int episodio = scanner.nextInt();
         titulo.buscarEpisodio(temporada, episodio);
-        checkContains(titulo);
+
+        addSerieList(titulo.getSerie());
     }
 
     protected void listaSeriesBuscadas() {
-        listaTitulo.forEach(t -> t.exibirSerie());
-    }
-
-    private void CriaListaSerie() {
-        serieList = listaTitulo
+        serieList = serieRepository.findAll();
+        serieList
                 .stream()
-                .flatMap(t -> t.DadosSeriesList
-                        .stream()
-                        .map(d -> new Serie(d))
-                ).collect(Collectors.toList());
+                .sorted(Comparator.comparing(Serie::getGenero))
+                .forEach(System.out::println);
     }
-
 
     protected void exibiSerieBuscada() {
         System.out.println("digite o nome da serie");
         MetodosTitulo titulo = new MetodosTitulo(scanner.nextLine());
-        titulo.DadosSeriesList.forEach(System.out::println);
-        checkContains(titulo);
+        titulo.exibirSerie();
+        addSerieList(titulo.getSerie());
     }
 
-    private void checkContains(MetodosTitulo metodosTitulo) {
-
-        listaTitulo = listaTitulo.stream()
-                //se forem iguais sao apagados, se forem diferentes continuam
-                .filter(t -> !t.thisName.equals(metodosTitulo.thisName))
-                .collect(Collectors.toList());
-        listaTitulo.add(metodosTitulo);
-        System.out.println(listaTitulo);
-            CriaListaSerie();
-        }
-
+    private void addSerieList(Serie serie) {
+                serieRepository.save(serie);
+//        serieList = serieList.stream()
+//                //se forem iguais sao apagados, se forem diferentes continuam
+//                .filter(t -> !t.getTitulo().equals(serie.getTitulo()))
+//                .collect(Collectors.toList());
+//        serieList.add(serie);
     }
+
+
+}
 
