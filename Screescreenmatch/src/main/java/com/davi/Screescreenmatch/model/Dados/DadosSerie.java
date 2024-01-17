@@ -9,6 +9,7 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
+import java.util.List;
 import java.util.Objects;
 
 

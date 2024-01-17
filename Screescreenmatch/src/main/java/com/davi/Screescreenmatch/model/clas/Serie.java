@@ -1,18 +1,22 @@
 package com.davi.Screescreenmatch.model.clas;
 
+import com.davi.Screescreenmatch.model.Dados.DadosEpisodio;
 import com.davi.Screescreenmatch.model.Dados.DadosSerie;
+import com.davi.Screescreenmatch.model.Dados.DadosTemporada;
 import com.davi.Screescreenmatch.service.Categoria;
 import com.davi.Screescreenmatch.service.ConsultaChatGPT;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
+import java.util.stream.Collectors;
 
 @Getter
-@Setter
+@Setter(AccessLevel.PRIVATE)
 @Entity
 @Table(name = "series")
 public class Serie {
@@ -27,12 +31,12 @@ public class Serie {
     private String atores;
     private String poster;
     private String sinopse;
-    @Transient
-    private List<Episodio> episodios = new ArrayList<>();
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
+
+    private List<Episodio> episodios;
 
     public Serie(){}
-
-    public Serie(DadosSerie dadosSerie) {
+    public Serie(DadosSerie dadosSerie, List<DadosTemporada> dadosTemporadas) {
         setTitulo(dadosSerie.titulo());
         setTotalTemporadas(dadosSerie.totalTemporadas());
         setAvaliacao(OptionalDouble.of(Double.parseDouble(dadosSerie.avaliacao())).orElse(0));
@@ -40,6 +44,10 @@ public class Serie {
         setAtores(dadosSerie.atores());
         setPoster(dadosSerie.poster());
         setSinopse(ConsultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim());
+        setEpisodios(dadosTemporadas.stream()
+                .flatMap(t -> t.episodios().stream()
+                        .map(Episodio::new)
+                ).collect(Collectors.toList()));
     }
 
     @Override

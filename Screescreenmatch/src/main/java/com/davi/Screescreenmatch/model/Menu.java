@@ -1,10 +1,7 @@
 package com.davi.Screescreenmatch.model;
 
 import com.davi.Screescreenmatch.Repository.SerieRepository;
-import com.davi.Screescreenmatch.model.clas.Serie;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
@@ -14,7 +11,8 @@ public class Menu {
 
 
    public Menu(SerieRepository serieRepository){
-        opcoesMenu = new OpcoesMenu(serieRepository);
+
+       opcoesMenu = new OpcoesMenu(serieRepository);
     }
     public void exibirMenu() {
         var opcao = -1;
@@ -45,7 +43,7 @@ public class Menu {
                         opcoesMenu.buscarEp();
                         break;
                     case 3:
-                        opcoesMenu.listaSeriesBuscadas();
+                        opcoesMenu.listaSeriesBancoDados();
                         break;
                     case 4:
                         opcoesMenu.listaEpisodios();
@@ -68,6 +66,7 @@ public class Menu {
                 }
             }
         } catch (Exception e) {
+            System.out.println("Serie nao encontrada");
             System.out.println("Problema: " + e +
                     "\n" + e.getCause());
             scanner.nextLine();
