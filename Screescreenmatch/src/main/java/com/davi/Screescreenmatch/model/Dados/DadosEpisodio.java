@@ -13,7 +13,7 @@ public record DadosEpisodio(@JsonAlias("Title") String titulo,
                             @JsonAlias("Episode") Integer numeroEp,
                             @JsonAlias("imdbRating") String avaliacao,
                             @JsonAlias("Released") String dataLancamento,
-                            @JsonAlias("Season") Integer temporada) {
+                            @JsonAlias("Season") String temporada) {
 
     @Override
     public String toString() {

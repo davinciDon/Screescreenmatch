@@ -21,18 +21,18 @@ public class Episodio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter(AccessLevel.PROTECTED)
     @ManyToOne
     private Serie serie;
-
     private Integer temporada;
     private String titulo;
     private Integer numeroEp;
     private double avaliacao;
     private LocalDate dataLancamento;
     public  Episodio(){}
-    public Episodio(DadosEpisodio dadosEpisodio) {
+    public Episodio(DadosEpisodio dadosEpisodio,Integer temporada) {
 
-        this.setTemporada(dadosEpisodio.temporada());
+        this.setTemporada(temporada);
         this.setTitulo(dadosEpisodio.titulo());
         this.setNumeroEp(dadosEpisodio.numeroEp());
         try {

@@ -8,13 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.*;
 
 public class OpcoesMenu {
-
-    private SerieRepository serieRepository;
-    public OpcoesMenu(SerieRepository serieRepository) {this.serieRepository = serieRepository;
-    }
     private final Scanner scanner = new Scanner(System.in);
 
     private MetodosTitulo titulo;
+
+    private SerieRepository serieRepository;
+
+    public OpcoesMenu(SerieRepository serieRepository) {
+        this.serieRepository = serieRepository;
+        titulo = new MetodosTitulo(serieRepository);
+    }
 
     protected void Statistics() {
         buscarAdd();
@@ -32,7 +35,6 @@ public class OpcoesMenu {
         buscarAdd();
         titulo.topEpisode(10);
 
-
     }
 
     protected void listaEpisodios() {
@@ -48,6 +50,7 @@ public class OpcoesMenu {
         int episodio = scanner.nextInt();
         titulo.buscarEpisodio(temporada, episodio);
     }
+
     protected void listaSeriesBancoDados() {
         titulo.listaSeriesBancoDados();
     }
@@ -57,10 +60,17 @@ public class OpcoesMenu {
         titulo.exibirSerie();
     }
 
-    private void buscarAdd(){
+   protected void buscarSerieDB(){
+       System.out.println("digite o nome da serie");
+       titulo.buscarSerieExistenteDB(scanner.nextLine());
+
+    }
+
+
+    private void buscarAdd() {
         System.out.println("digite o nome da serie");
         titulo = new MetodosTitulo(scanner.nextLine(), serieRepository);
-        titulo.addSerieList(titulo.getSerie());}
+    }
 
 }
 

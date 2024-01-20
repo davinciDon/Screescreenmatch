@@ -37,7 +37,7 @@ public class ConsumoApi {
         }
     }
 
-    public String ObterDadosJsonEpisode(String titulo, Integer season, Integer episode) {
+    public String ObterDadosJsonTitulo(String titulo, Integer season, Integer episode) {
         String endereco = titulo.toLowerCase();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -58,7 +58,7 @@ public class ConsumoApi {
         return response.body();
     }
 
-    public DadosTemporada ObterDadosJsonSeason(String titulo, Integer season) {
+    public DadosTemporada ObterDadosJsonTitulo(String titulo, Integer season) {
         String endereco = titulo.toLowerCase();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()

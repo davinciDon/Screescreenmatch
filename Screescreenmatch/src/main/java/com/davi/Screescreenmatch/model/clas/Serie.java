@@ -31,11 +31,14 @@ public class Serie {
     private String atores;
     private String poster;
     private String sinopse;
-    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL)
+    private String tipo;
 
-    private List<Episodio> episodios;
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Episodio> episodios = new ArrayList<>();
 
-    public Serie(){}
+    public Serie() {
+    }
+
     public Serie(DadosSerie dadosSerie, List<DadosTemporada> dadosTemporadas) {
         setTitulo(dadosSerie.titulo());
         setTotalTemporadas(dadosSerie.totalTemporadas());
@@ -44,10 +47,18 @@ public class Serie {
         setAtores(dadosSerie.atores());
         setPoster(dadosSerie.poster());
         setSinopse(ConsultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim());
-        setEpisodios(dadosTemporadas.stream()
+        setTipo(dadosSerie.tipo());
+
+        setEpisodios(dadosTemporadas
+                .stream()
                 .flatMap(t -> t.episodios().stream()
-                        .map(Episodio::new)
+                        .map(e -> new Episodio(e, t.numero()))
                 ).collect(Collectors.toList()));
+    }
+
+    private void setEpisodios(List<Episodio> episodios) {
+        episodios.forEach(e -> e.setSerie(this));
+        this.episodios = episodios;
     }
 
     @Override

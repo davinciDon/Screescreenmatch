@@ -10,10 +10,11 @@ public class Menu {
     OpcoesMenu opcoesMenu;
 
 
-   public Menu(SerieRepository serieRepository){
+    public Menu(SerieRepository serieRepository) {
 
-       opcoesMenu = new OpcoesMenu(serieRepository);
+        opcoesMenu = new OpcoesMenu(serieRepository);
     }
+
     public void exibirMenu() {
         var opcao = -1;
         try {
@@ -27,6 +28,7 @@ public class Menu {
                         5 - Top 10 episodios
                         6 - Buscar episodio por nome
                         7 - Estastiticas da temporada
+                        8 - Busca series ja salvas na DB
                                                 
                         0 - Sair                                
                         """;
@@ -56,6 +58,9 @@ public class Menu {
                         break;
                     case 7:
                         opcoesMenu.Statistics();
+                        break;
+                    case 8:
+                        opcoesMenu.buscarSerieDB();
                         break;
                     case 0:
                         System.out.println("Saindo...");

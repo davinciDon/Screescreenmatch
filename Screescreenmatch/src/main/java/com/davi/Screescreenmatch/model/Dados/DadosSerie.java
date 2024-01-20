@@ -22,6 +22,7 @@ public record DadosSerie(
         @JsonAlias("Genre") String genero,
         @JsonAlias("Actors") String atores,
         @JsonAlias("Poster") String poster,
+        @JsonAlias("Type") String tipo,
         @JsonAlias("Plot") String sinopse) {
 
     @Override
