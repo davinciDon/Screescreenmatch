@@ -29,6 +29,7 @@ public class Menu {
                         6 - Buscar episodio por nome
                         7 - Estastiticas da temporada
                         8 - Busca series ja salvas na DB
+                        9 = Buscar serie por ator
                                                 
                         0 - Sair                                
                         """;
@@ -62,6 +63,10 @@ public class Menu {
                     case 8:
                         opcoesMenu.buscarSerieDB();
                         break;
+                    case 9:
+                        opcoesMenu.buscarAtor();
+                        break;
+
                     case 0:
                         System.out.println("Saindo...");
                         break;

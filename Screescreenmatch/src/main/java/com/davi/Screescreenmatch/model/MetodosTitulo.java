@@ -17,14 +17,12 @@ import java.util.stream.Collectors;
 public class MetodosTitulo {
 
     private final List<DadosTemporada> dadosTemporadas = new ArrayList<>();
-    @Getter
+    @Getter(AccessLevel.PRIVATE)
     private Serie serie;
     @Autowired
     private SerieRepository serieRepository;
-    private  DadosSerie dadosSerie;
     ConsumoApi consumoApi = new ConsumoApi();
     private List<Serie> serieList;
-
     Optional<Serie> serieOptional;
 
     MetodosTitulo(SerieRepository serieRepository) {
@@ -35,13 +33,12 @@ public class MetodosTitulo {
     MetodosTitulo(String name, SerieRepository serieRepository) {
         this.serieRepository = serieRepository;
         serieList = this.serieRepository.findAll();
-        dadosSerie = consumoApi.ObterDadosJsonTitulo(name);
+        DadosSerie dadosSerie = consumoApi.ObterDadosJsonTitulo(name);
         try {
             for (int i = 1; i < dadosSerie.totalTemporadas() + 1; i++) {
                 DadosTemporada season = consumoApi.ObterDadosJsonTitulo(dadosSerie.titulo(), i);
                 dadosTemporadas.add(season);
             }
-
             serie = new Serie(dadosSerie, dadosTemporadas);
             addSerieList(getSerie());
 
@@ -50,16 +47,18 @@ public class MetodosTitulo {
         }
     }
 
+    @SneakyThrows
     public void exibirSerie() {
 
-        System.out.println(serieOptional.isPresent()?
-        "\nDados da série: \n" + serieOptional.get()
-               :"\"Série não encontrada no banco de dados!\"");
-  }
+        System.out.println(serieOptional.isPresent() ?
+                "\nDados da série: \n" + serie
+                : "\nSérie não encontrada no banco de dados!\"");
+    }
 
+    @SneakyThrows
     public void listTemporadas() {
-        if (serieOptional.get().getTipo().contains("series")) {
-            serieOptional.get().getEpisodios().stream()
+        if (serie.getTipo().contains("series")) {
+            serie.getEpisodios().stream()
                     .collect(Collectors.groupingBy(Episodio::getTemporada))
                     .forEach((temporada, episodiosDaTemporada) -> {
                         System.out.println("\nSeason: " + temporada);
@@ -68,10 +67,10 @@ public class MetodosTitulo {
         } else System.out.println("nao tem episodios pq é um filme");
     }
 
+    @SneakyThrows
     public void buscarEpisodio(Integer temporada, Integer ep) {
 
-
-        serieOptional.get().getEpisodios().stream()
+        serie.getEpisodios().stream()
                 .filter(t -> t.getTemporada().equals(temporada) && t.getNumeroEp().equals(ep))
                 .findFirst().ifPresentOrElse(
                         System.out::println,
@@ -79,10 +78,11 @@ public class MetodosTitulo {
 
     }
 
+    @SneakyThrows()
     public void topEpisode(int topX) {
         System.out.println("TOP " + topX + "\n");
 
-        serieOptional.get().getEpisodios().stream()
+        serie.getEpisodios().stream()
                 .sorted(Comparator.comparing(Episodio::getAvaliacao).reversed())
                 .limit(topX)
                 .forEach(System.out::println);
@@ -91,22 +91,22 @@ public class MetodosTitulo {
     @SneakyThrows
     public void filterDate(int ano) {
         LocalDate dateBusca = LocalDate.of(ano, 1, 1);
-        if (serieOptional.get().getTipo().contains("series")) {
+        if (serie.getTipo().contains("series")) {
             try {
                 System.out.printf("espisodios a partir de %s:", ano);
-                serieOptional.get().getEpisodios().stream().filter(e -> e.getDataLancamento() != null &&
+                serie.getEpisodios().stream().filter(e -> e.getDataLancamento() != null &&
                                 e.getDataLancamento().isAfter(dateBusca))
                         .forEach(System.out::println);
             } catch (Exception e) {
                 System.out.println("ano invalido");
             }
-        }else {
+        } else {
             System.out.println("nao tem episodios pq é um filme");
         }
     }
 
     public void buscaEpisodePorNome(String title) {
-        serieOptional.get().getEpisodios().stream()
+        serie.getEpisodios().stream()
                 .filter(t -> t.getTitulo().toLowerCase().contains(title.toLowerCase()))
                 .findFirst().ifPresentOrElse(
                         System.out::println,
@@ -133,32 +133,40 @@ public class MetodosTitulo {
     }
 
     public void addSerieList(Serie serie) {
-        Optional<Serie> serieListOptional = serieList.stream()
-                .filter(s -> s.getTitulo().equalsIgnoreCase(serie.getTitulo()))
-                .findFirst();
-        if (serieListOptional.isEmpty()) {
+        serieOptional = serieRepository
+                .findByTituloContainingIgnoreCase(serie.getTitulo());
+        if (serie.getTipo().contains("series")) {
+        if (serieOptional.isEmpty()) {
             serieRepository.save(serie);
             serieList = serieRepository.findAll();
+            serieOptional = serieRepository
+                    .findByTituloContainingIgnoreCase(serie.getTitulo());
+            this.serie = serieOptional.get();}} else {
+            System.out.println(serie.getTitulo()+ " nao é uma serie, é um filme");}
         }
-        serieOptional = serieRepository
-                .findByTituloContainingIgnoreCase(getSerie().getTitulo());
-    }
+
+
 
     protected void listaSeriesBancoDados() {
-
         serieList
                 .stream()
                 .sorted(Comparator.comparing(Serie::getGenero))
                 .forEach(System.out::println);
     }
 
-    protected void buscarSerieExistenteDB(String name){
+    protected void buscarSerieExistenteDB(String name) {
 
-        Optional<Serie> contains = serieList.stream()
-                .filter(s -> s.getTitulo().equalsIgnoreCase(name)).findFirst();
+        Optional<Serie> contains = serieRepository
+                .findByTituloContainingIgnoreCase(name);
+        System.out.println((contains.isPresent() ?
+                contains.get() : "Serie nao existe no banco de dados ainda"));
+    }
 
-        System.out.println((contains.isPresent()?
-                contains.get():"Serie nao existe no banco de dados ainda"));
+    protected void buscarAtor(String name) {
+        List<Serie> contains = serieRepository
+                .findByAtoresContainingIgnoreCase(name);
+        System.out.printf("Series em que %s participou\n:", name);
+        contains.forEach(s -> System.out.println(s.getTitulo()));
     }
 
 

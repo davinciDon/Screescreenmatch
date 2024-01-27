@@ -72,6 +72,11 @@ public class OpcoesMenu {
         titulo = new MetodosTitulo(scanner.nextLine(), serieRepository);
     }
 
+    protected void buscarAtor(){
+        System.out.println("Digite o nome do ator: ");
+        titulo.buscarAtor(scanner.nextLine());
+    }
+
 }
 
 

@@ -48,7 +48,6 @@ public class Serie {
         setPoster(dadosSerie.poster());
         setSinopse(ConsultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim());
         setTipo(dadosSerie.tipo());
-
         setEpisodios(dadosTemporadas
                 .stream()
                 .flatMap(t -> t.episodios().stream()
@@ -70,6 +69,7 @@ public class Serie {
                 "Avaliação: " + getAvaliacao() + "\n" +
                 "Atores: " + getAtores() + "\n" +
                 "Sinopse: " + getSinopse() + "\n" +
+                "Tipo: " + getTipo() + "\n" +
                 getPoster();
     }
 }
