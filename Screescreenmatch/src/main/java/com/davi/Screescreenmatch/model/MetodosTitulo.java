@@ -40,7 +40,7 @@ public class MetodosTitulo {
                 dadosTemporadas.add(season);
             }
             serie = new Serie(dadosSerie, dadosTemporadas);
-            addSerieList(getSerie());
+            addSerieList(serie);
 
         } catch (Exception e) {
             System.out.println("\n" + e + "\n" + e.getCause() + "\nclass Titulo\n");
@@ -147,12 +147,12 @@ public class MetodosTitulo {
 
 
 
-    protected void listaSeriesBancoDados() {
-        serieList
-                .stream()
-                .sorted(Comparator.comparing(Serie::getGenero))
-                .forEach(System.out::println);
-    }
+//    protected void listaSeriesBancoDados() {
+//        serieList
+//                .stream()
+//                .sorted(Comparator.comparing(Serie::getGenero))
+//                .forEach(System.out::println);
+//    }
 
     protected void buscarSerieExistenteDB(String name) {
 

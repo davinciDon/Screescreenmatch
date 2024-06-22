@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @Entity
-@Table(name = "series")
+@Table(name = "serie")
 public class Serie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class Serie {
     private String titulo;
     private int totalTemporadas;
     private Double avaliacao;
-    @Enumerated(EnumType.STRING)
+   @Enumerated(EnumType.STRING)
     private Categoria genero;
     private String atores;
     private String poster;
@@ -43,10 +43,14 @@ public class Serie {
         setTitulo(dadosSerie.titulo());
         setTotalTemporadas(dadosSerie.totalTemporadas());
         setAvaliacao(OptionalDouble.of(Double.parseDouble(dadosSerie.avaliacao())).orElse(0));
+       // if (dadosSerie.genero().toLowerCase() == "adventure"){
+       //     setGenero(Categoria.ACAO);}
+       // else{
         setGenero(Categoria.fromString(dadosSerie.genero().split(",")[0].trim()));
         setAtores(dadosSerie.atores());
         setPoster(dadosSerie.poster());
-        setSinopse(ConsultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim());
+      //  setSinopse(ConsultaChatGPT.obterTraducao(dadosSerie.sinopse()).trim());
+        setSinopse(dadosSerie.sinopse());
         setTipo(dadosSerie.tipo());
         setEpisodios(dadosTemporadas
                 .stream()
@@ -63,7 +67,7 @@ public class Serie {
     @Override
     public String toString() {
 
-        return "\nGenero: " + getGenero() + "\n" +
+        return //"\nGenero: " + getGenero() + "\n" +
                 "Titulo: " + getTitulo() + "\n" +
                 "Nº temporadas: " + getTotalTemporadas() + "\n" +
                 "Avaliação: " + getAvaliacao() + "\n" +

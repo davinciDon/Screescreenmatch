@@ -46,7 +46,7 @@ public class Menu {
                         opcoesMenu.buscarEp();
                         break;
                     case 3:
-                        opcoesMenu.listaSeriesBancoDados();
+//                        opcoesMenu.listaSeriesBancoDados();
                         break;
                     case 4:
                         opcoesMenu.listaEpisodios();

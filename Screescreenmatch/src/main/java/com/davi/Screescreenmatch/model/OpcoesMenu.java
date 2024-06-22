@@ -51,9 +51,9 @@ public class OpcoesMenu {
         titulo.buscarEpisodio(temporada, episodio);
     }
 
-    protected void listaSeriesBancoDados() {
-        titulo.listaSeriesBancoDados();
-    }
+//    protected void listaSeriesBancoDados() {
+//        titulo.listaSeriesBancoDados();
+//    }
 
     protected void exibiSerieBuscada() {
         buscarAdd();
